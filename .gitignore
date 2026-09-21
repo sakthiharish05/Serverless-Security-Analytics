@@ -1,0 +1,48 @@
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+eggs/
+*.egg
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+*.log
+
+# Node (if frontend uses it)
+node_modules/
+npm-debug.log*
+
+# Byte-compiled files
+*.pyc
+*.pyo
+
+# Distribution
+*.tar.gz
+*.zip
