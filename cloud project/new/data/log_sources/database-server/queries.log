@@ -1,0 +1,6 @@
+2026-09-01T08:00:00Z [QUERY] user=app_user db=production query="SELECT * FROM users WHERE id=1"
+2026-09-01T08:05:00Z [QUERY] user=app_user db=production query="SELECT * FROM products WHERE name LIKE '%phone%'"
+2026-09-01T08:10:00Z [SLOW_QUERY] user=report_user db=production query="SELECT * FROM orders JOIN users" duration=5200ms
+2026-09-01T08:15:00Z [ALERT] user=unknown db=production query="SELECT * FROM users UNION ALL SELECT password FROM credentials"
+2026-09-01T08:20:00Z [ALERT] user=unknown db=production query="DROP TABLE sessions; --"
+2026-09-01T08:25:00Z [QUERY] user=backup_svc db=production query="INFORMATION_SCHEMA.TABLES"

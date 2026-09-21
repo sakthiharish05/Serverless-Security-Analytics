@@ -1,0 +1,85 @@
+[
+  {
+    "id": "INC-001",
+    "title": "Multiple Failed Login Attempts",
+    "description": "Detected 5+ failed login attempts from IP 192.168.1.100",
+    "severity": "HIGH",
+    "status": "open",
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-15T10:30:00Z",
+    "assigned_to": null,
+    "tags": [
+      "authentication",
+      "brute-force"
+    ],
+    "log_entries": [
+      "2024-01-15 10:23:45 user=admin source=192.168.1.100 action=login failed",
+      "2024-01-15 10:23:46 user=admin source=192.168.1.100 action=login failed",
+      "2024-01-15 10:23:47 user=admin source=192.168.1.100 action=login failed"
+    ],
+    "matched_rules": [
+      "BF_001"
+    ],
+    "resolution": null
+  },
+  {
+    "id": "INC-937ECD02",
+    "title": "Test Incident",
+    "description": "This is a test incident created via API",
+    "severity": "HIGH",
+    "status": "open",
+    "created_at": "2026-04-04T14:41:37.898342Z",
+    "updated_at": "2026-04-04T14:41:37.898342Z",
+    "assigned_to": null,
+    "tags": [
+      "test",
+      "api"
+    ],
+    "log_entries": [
+      "test log entry 1",
+      "test log entry 2"
+    ],
+    "matched_rules": [
+      "TEST_001"
+    ],
+    "resolution": null
+  },
+  {
+    "id": "INC-54F60550",
+    "title": "Security Threat Detected: Destructive Database Command",
+    "description": "Automated incident created from log analysis. 8 threat signatures detected with severity CRITICAL.",
+    "severity": "CRITICAL",
+    "status": "open",
+    "created_at": "2026-04-04T15:34:55.857075Z",
+    "updated_at": "2026-04-04T15:34:55.857075Z",
+    "assigned_to": null,
+    "tags": [
+      "automated",
+      "log-analysis",
+      "destructive-database-command"
+    ],
+    "log_entries": [
+      "2026-03-31T09:00:01Z server=auth01 user=admin ip=192.168.1.10 action=login status=success",
+      "2026-03-31T09:01:15Z server=auth01 user=alice ip=192.168.1.11 action=login status=success",
+      "2026-03-31T09:02:30Z server=auth01 user=bob ip=192.168.1.12 action=login status=failed",
+      "2026-03-31T09:02:35Z server=auth01 user=bob ip=192.168.1.12 action=login status=failed",
+      "2026-03-31T09:02:40Z server=auth01 user=bob ip=192.168.1.12 action=login status=failed",
+      "2026-03-31T09:02:45Z server=auth01 user=bob ip=192.168.1.12 action=login status=failed",
+      "2026-03-31T09:02:50Z server=auth01 user=bob ip=192.168.1.12 action=login status=failed",
+      "2026-03-31T09:03:00Z server=auth01 user=bob ip=192.168.1.12 action=login status=success",
+      "",
+      "2026-03-31T09:05:10Z server=web01 user=alice ip=192.168.1.11 action=access_resource resource=/dashboard status=success"
+    ],
+    "matched_rules": [
+      "SQLI_006",
+      "BF_001",
+      "PRIV_001",
+      "PRIV_002",
+      "CMD_003",
+      "CMD_004",
+      "UPLOAD_001",
+      "EXT_IP_001"
+    ],
+    "resolution": null
+  }
+]

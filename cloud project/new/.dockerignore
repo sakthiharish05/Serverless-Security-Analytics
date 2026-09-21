@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log*
+docker-compose.yml
+.dockerignore
+.git
+.gitignore
+backend/
+frontend/
+package.json
+package-lock.json
+gcp_function/
+__pycache__
+venv/
+*.pyc

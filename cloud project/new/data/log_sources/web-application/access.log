@@ -1,0 +1,8 @@
+2026-09-01T10:00:01Z 192.168.1.50 GET /api/users?id=1 OR 1=1 HTTP/1.1 200 3412
+2026-09-01T10:00:05Z 192.168.1.51 POST /login HTTP/1.1 401 auth failed user=admin
+2026-09-01T10:00:06Z 192.168.1.51 POST /login HTTP/1.1 401 auth failed user=admin
+2026-09-01T10:00:07Z 192.168.1.51 POST /login HTTP/1.1 401 auth failed user=admin
+2026-09-01T10:00:08Z 192.168.1.51 POST /login HTTP/1.1 401 auth failed user=admin
+2026-09-01T10:00:15Z 192.168.1.52 GET /dashboard HTTP/1.1 200 8192
+2026-09-01T10:01:30Z 10.0.0.5 GET /api/data HTTP/1.1 200 1024
+2026-09-01T10:02:45Z 192.168.1.53 POST /search HTTP/1.1 200 2048 query=<script>alert('xss')</script>

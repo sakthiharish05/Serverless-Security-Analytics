@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cloud-native enterprise security log analysis platform with event-driven processing pipeline, S3 storage, DynamoDB, SNS alerting, and CloudWatch integration.">
+    <title>Enterprise Security Log Analysis Platform — Cloud Pipeline</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-badge">☁️ CLOUD-NATIVE</div>
+            <h1>🛡️ Enterprise Security Log Analysis Platform</h1>
+            <p class="subtitle">Event-driven threat detection pipeline with S3 · DynamoDB · SNS · CloudWatch</p>
+            <div class="cloud-indicator" id="cloudIndicator">
+                <span class="cloud-dot"></span>
+                <span id="cloudProviderText">Initializing...</span>
+            </div>
+        </header>
+
+        <nav class="main-nav">
+            <button class="nav-tab active" data-tab="analysis" id="navAnalysis">🔍 Log Analysis</button>
+            <button class="nav-tab" data-tab="pipeline" id="navPipeline">☁️ Cloud Pipeline</button>
+            <button class="nav-tab" data-tab="dashboard" id="navDashboard">📊 Dashboard</button>
+            <button class="nav-tab" data-tab="incidents" id="navIncidents">📋 Incidents</button>
+        </nav>
+
+        <main>
+            <!-- ════════════════════════════════════════════ -->
+            <!-- Tab 1: Log Analysis (Original) -->
+            <!-- ════════════════════════════════════════════ -->
+            <section id="analysisTab" class="tab-content active">
+                <div class="input-section">
+                    <h2>🔍 Threat Detection</h2>
+                    <form id="analyzeForm">
+                        <div class="form-group">
+                            <label for="logInput">Paste your security logs here:</label>
+                            <textarea
+                                id="logInput"
+                                name="logs"
+                                placeholder="Paste log entries, HTTP requests, system logs, application logs, etc. Supports any text-based log format."
+                                rows="12"
+                                required
+                            ></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="analyzeBtn">Analyze Logs</button>
+                            <button type="button" id="createIncidentBtn" class="btn btn-secondary" style="display:none;">Create Incident</button>
+                        </div>
+                    </form>
+                </div>
+
+                <section id="resultSection" class="result-section" style="display:none;">
+                    <h2>Analysis Results</h2>
+
+                    <div class="summary">
+                        <div class="status-card" id="statusCard">
+                            <h3 id="statusTitle">Analysis Status</h3>
+                            <p id="statusValue" class="status-value">--</p>
+                            <p id="threatType" class="threat-type">--</p>
+                            <p id="severity" class="severity">--</p>
+                            <p id="threatsCountInfo" style="margin-top: 12px; color: #94a3b8; font-size: 0.95em;">--</p>
+                        </div>
+                    </div>
+
+                    <div class="matches-container" id="matchesContainer" style="display:none;">
+                        <h3>Detected Threat Rules</h3>
+                        <table class="rules-table">
+                            <thead>
+                                <tr>
+                                    <th>Rule ID</th>
+                                    <th>Attack Type</th>
+                                    <th>Severity</th>
+                                    <th>Count</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rulesTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="no-threats" id="noThreatsMessage" style="display:none;">
+                        <p>✅ No Threats Detected</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ════════════════════════════════════════════ -->
+            <!-- Tab 2: Cloud Pipeline -->
+            <!-- ════════════════════════════════════════════ -->
+            <section id="pipelineTab" class="tab-content">
+                <div class="pipeline-grid">
+                    <!-- Upload Section -->
+                    <div class="pipeline-card">
+                        <div class="pipeline-card-header">
+                            <div class="pipeline-icon s3-icon">📦</div>
+                            <div>
+                                <h3>S3 Log Upload</h3>
+                                <p class="service-tag">Amazon S3 → Lambda → Analysis</p>
+                            </div>
+                        </div>
+                        <div class="upload-zone" id="uploadZone">
+                            <div class="upload-icon">☁️</div>
+                            <p class="upload-text">Drag & drop log files here</p>
+                            <p class="upload-subtext">or click to browse • Max 50MB • .log, .txt, .csv</p>
+                            <input type="file" id="fileInput" accept=".log,.txt,.csv,.json" style="display:none;">
+                        </div>
+                        <div class="upload-progress" id="uploadProgress" style="display:none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <p class="progress-text" id="progressText">Processing...</p>
+                        </div>
+                        <div class="upload-result" id="uploadResult" style="display:none;"></div>
+                    </div>
+
+                    <!-- CloudWatch Ingestion -->
+                    <div class="pipeline-card">
+                        <div class="pipeline-card-header">
+                            <div class="pipeline-icon cw-icon">📡</div>
+                            <div>
+                                <h3>CloudWatch Ingestion</h3>
+                                <p class="service-tag">Pull logs from CloudWatch Log Groups</p>
+                            </div>
+                        </div>
+                        <div class="log-groups-list" id="logGroupsList">
+                            <div class="loading-placeholder">Loading log groups...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline Flow Diagram -->
+                <div class="pipeline-flow">
+                    <h3>Event-Driven Processing Flow</h3>
+                    <div class="flow-diagram">
+                        <div class="flow-step">
+                            <div class="flow-node s3-node">
+                                <span class="flow-icon">📦</span>
+                                <span class="flow-label">S3 Storage</span>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-node lambda-node">
+                                <span class="flow-icon">⚡</span>
+                                <span class="flow-label">Lambda Analyze</span>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-node dynamodb-node">
+                                <span class="flow-icon">🗄️</span>
+                                <span class="flow-label">DynamoDB Store</span>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-node sns-node">
+                                <span class="flow-icon">🔔</span>
+                                <span class="flow-label">SNS Alert</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline History -->
+                <div class="pipeline-history">
+                    <div class="section-header">
+                        <h3>Processing History</h3>
+                        <button class="btn btn-secondary btn-sm" id="refreshHistoryBtn">Refresh</button>
+                    </div>
+                    <div class="history-list" id="historyList">
+                        <div class="loading-placeholder">Loading history...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════════════════════════════════════ -->
+            <!-- Tab 3: Dashboard -->
+            <!-- ════════════════════════════════════════════ -->
+            <section id="dashboardTab" class="tab-content">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card" id="statLogsProcessed">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-value" id="statLogsValue">0</div>
+                        <div class="stat-label">Logs Processed</div>
+                        <div class="stat-service">via S3 Pipeline</div>
+                    </div>
+                    <div class="stat-card threat-card" id="statThreats">
+                        <div class="stat-icon">🚨</div>
+                        <div class="stat-value" id="statThreatsValue">0</div>
+                        <div class="stat-label">Threats Detected</div>
+                        <div class="stat-service">by Regex Engine</div>
+                    </div>
+                    <div class="stat-card alert-card" id="statAlerts">
+                        <div class="stat-icon">🔔</div>
+                        <div class="stat-value" id="statAlertsValue">0</div>
+                        <div class="stat-label">Alerts Sent</div>
+                        <div class="stat-service">via SNS</div>
+                    </div>
+                    <div class="stat-card incident-card-stat" id="statIncidents">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-value" id="statIncidentsValue">0</div>
+                        <div class="stat-label">Active Incidents</div>
+                        <div class="stat-service">in DynamoDB</div>
+                    </div>
+                </div>
+
+                <!-- Cloud Services Status -->
+                <div class="cloud-services-section">
+                    <div class="section-header">
+                        <h3>☁️ Cloud Services Status</h3>
+                        <button class="btn btn-secondary btn-sm" id="refreshCloudStatusBtn">Refresh</button>
+                    </div>
+                    <div class="services-grid" id="servicesGrid">
+                        <div class="loading-placeholder">Loading cloud status...</div>
+                    </div>
+                </div>
+
+                <!-- Alert History -->
+                <div class="alert-history-section">
+                    <div class="section-header">
+                        <h3>🔔 SNS Alert History</h3>
+                        <button class="btn btn-secondary btn-sm" id="refreshAlertsBtn">Refresh</button>
+                    </div>
+                    <div class="alerts-list" id="alertsList">
+                        <div class="loading-placeholder">Loading alerts...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════════════════════════════════════ -->
+            <!-- Tab 4: Incident Management (Original) -->
+            <!-- ════════════════════════════════════════════ -->
+            <section id="incidentsTab" class="tab-content">
+                <div class="incidents-header">
+                    <h2>📋 Security Incidents</h2>
+                    <button id="refreshIncidentsBtn" class="btn btn-secondary">Refresh</button>
+                </div>
+
+                <div class="incidents-filters">
+                    <select id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="open">Open</option>
+                        <option value="investigating">Investigating</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                    <select id="severityFilter">
+                        <option value="">All Severity</option>
+                        <option value="CRITICAL">Critical</option>
+                        <option value="HIGH">High</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="LOW">Low</option>
+                    </select>
+                </div>
+
+                <div class="incidents-list" id="incidentsList">
+                    <!-- Incidents will be loaded here -->
+                </div>
+
+                <!-- Incident Detail Modal -->
+                <div id="incidentModal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="modalTitle">Incident Details</h3>
+                            <span class="modal-close">&times;</span>
+                        </div>
+                        <div id="modalBody">
+                            <!-- Incident details will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div id="loadingSpinner" class="spinner" style="display:none;"></div>
+            <div id="errorMessage" class="error-message" style="display:none;"></div>
+        </main>
+
+        <footer>
+            <p>Enterprise Security Log Analysis Platform v2.0 | Cloud-Native Event-Driven Pipeline | S3 · DynamoDB · SNS · CloudWatch</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

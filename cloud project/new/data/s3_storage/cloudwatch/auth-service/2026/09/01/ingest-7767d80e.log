@@ -1,0 +1,7 @@
+2026-09-01T09:30:00Z [INFO] user=alice ip=10.0.0.2 action=login status=success
+2026-09-01T09:31:00Z [WARN] user=bob ip=192.168.1.100 action=login status=failed reason="invalid password"
+2026-09-01T09:31:05Z [WARN] user=bob ip=192.168.1.100 action=login status=failed reason="invalid password"
+2026-09-01T09:31:10Z [WARN] user=bob ip=192.168.1.100 action=login status=failed reason="invalid password"
+2026-09-01T09:32:00Z [ALERT] user=root ip=203.0.113.50 action=sudo command="cat /etc/shadow"
+2026-09-01T09:33:00Z [INFO] user=admin ip=10.0.0.1 action=privilege_escalation role=superuser
+2026-09-01T09:34:00Z [WARN] user=unknown ip=198.51.100.23 action=login status=failed reason="user not found"
